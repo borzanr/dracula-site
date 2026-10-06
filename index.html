@@ -22,7 +22,7 @@
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { margin: 0; background: var(--ink); color: var(--bone); font-family: Georgia, "Noto Serif", "Times New Roman", serif; }
-  img { display: block; max-width: 100%; }
+  img { display: block; max-width: 100%; height: auto; }  /* sem isto, o atributo height estica a imagem */
   h1, h2 { margin: 0; font-weight: 700; }
   p { margin: 0; line-height: 1.6; }
 
@@ -56,7 +56,7 @@
   h2 { font-size: clamp(30px, 7.5vw, 46px); line-height: 1.15; margin-bottom: 16px; }
   .feature p { font-size: clamp(17px, 4.4vw, 20px); color: var(--bone); }
   .feature .text { text-shadow: 0 1px 14px #000, 0 0 3px #000; }
-  .phone { width: min(64vw, 290px); border-radius: 30px; border: 3px solid #46342F; box-shadow: 0 24px 70px #000; overflow: hidden; background: #150E0E; }
+  .phone { width: min(70vw, 300px); height: auto; aspect-ratio: 540 / 1092; border-radius: 30px; border: 3px solid #46342F; box-shadow: 0 24px 70px #000; overflow: hidden; background: #150E0E; }
   @media (min-width: 820px) {
     .feature { padding: 110px 40px; }
     .feature .in { grid-template-columns: 1fr auto; gap: 72px; }
