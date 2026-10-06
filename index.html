@@ -7,64 +7,181 @@
 <meta name="description" content="Read Bram Stoker's Dracula as it happens: journals, letters and telegrams arrive one by one, with choices, clues, sound and art.">
 <link rel="canonical" href="https://dracula.borzanti.com/">
 <meta name="theme-color" content="#0D0909">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dracula.borzanti.com/">
+<meta property="og:title" content="Dracula — Bram Stoker's novel, told in messages">
+<meta property="og:description" content="Journals, letters and telegrams arrive one by one, with choices, clues, sound and art. Chapter 1 is free.">
+<meta property="og:image" content="https://dracula.borzanti.com/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="image" href="img/hero.webp" media="(max-aspect-ratio: 1/1)">
+<link rel="preload" as="image" href="img/hero-wide.webp" media="(min-aspect-ratio: 1/1)">
 <style>
-  :root { color-scheme: dark; --ink: #0D0909; --line: #3A2A2B; --blood: #9B1C1F; --blood-bright: #C8373A; --bone: #E8DCC8; --bone-dim: #A89A88; }
+  :root { color-scheme: dark; --ink: #0D0909; --line: #3A2A2B; --blood: #9B1C1F; --blood-bright: #C8373A; --bone: #E8DCC8; --bone-dim: #B9AB98; --gold: #FFD23F; }
   * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; background: var(--ink); color: var(--bone);
-    font-family: Georgia, "Noto Serif", "Times New Roman", serif; display: flex; flex-direction: column; }
-  .hero { position: relative; overflow: hidden; }
-  .hero svg { display: block; width: 100%; height: auto; max-height: 52vh; }
-  main { max-width: 640px; margin: 0 auto; padding: 8px 16px 40px; text-align: center; flex: 1; }
-  h1 { font-size: clamp(40px, 11vw, 64px); letter-spacing: .08em; margin: 0; }
-  .sub { font-style: italic; color: var(--bone-dim); font-size: clamp(18px, 4.5vw, 22px); margin: 4px 0 24px; }
-  p { color: var(--bone-dim); line-height: 1.65; }
-  .lang { display: none; }
-  .lang.on { display: block; }
-  footer { text-align: center; font-size: 14px; color: var(--bone-dim); padding: 20px 16px 32px; border-top: 1px solid var(--line); }
-  footer a { color: var(--blood-bright); }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--ink); color: var(--bone); font-family: Georgia, "Noto Serif", "Times New Roman", serif; }
+  img { display: block; max-width: 100%; }
+  h1, h2 { margin: 0; font-weight: 700; }
+  p { margin: 0; line-height: 1.6; }
+
+  /* Cada bloco é uma cena: a foto no fundo, escurecida, e o texto por cima. */
+  .scene { position: relative; overflow: hidden; isolation: isolate; }
+  .scene .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .scene::after { content: ""; position: absolute; inset: 0; z-index: -1; }
+
+  .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+    text-align: center; padding: 24px 20px max(40px, env(safe-area-inset-bottom)); }
+  .hero .bg { object-position: 50% 30%; animation: drift 40s ease-in-out infinite alternate; }
+  .hero::after { background: linear-gradient(to bottom, rgba(13,9,9,.15) 0%, rgba(13,9,9,0) 30%, rgba(13,9,9,.85) 68%, var(--ink) 100%); }
+  @keyframes drift { from { transform: scale(1); } to { transform: scale(1.08) translateY(-1.5%); } }
+  h1 { font-size: clamp(52px, 15vw, 120px); letter-spacing: .08em; line-height: 1; text-shadow: 0 2px 24px #000; }
+  .sub { font-style: italic; font-size: clamp(19px, 5vw, 28px); margin: 10px 0 26px; text-shadow: 0 1px 12px #000; }
   a.cta { display: inline-block; background: var(--blood); color: var(--bone); text-decoration: none; font-weight: 700;
-    padding: 14px 28px; border-radius: 999px; min-height: 48px; margin-top: 8px; }
+    font-size: 18px; padding: 16px 34px; border-radius: 999px; min-height: 52px; box-shadow: 0 6px 30px rgba(155,28,31,.45); }
   a.cta:hover, a.cta:focus-visible { background: var(--blood-bright); }
-  .note { font-size: 14px; margin-top: 4px; }
+  .note { font-size: 15px; color: var(--bone-dim); margin-top: 14px; }
+  .switch { position: absolute; top: max(14px, env(safe-area-inset-top)); right: 16px; background: rgba(13,9,9,.55);
+    border: 1px solid var(--line); color: var(--bone); font: 700 14px/1 Arial, sans-serif; letter-spacing: .08em;
+    padding: 10px 14px; border-radius: 999px; cursor: pointer; }
+  .more { display: block; margin-top: 30px; color: var(--bone-dim); font-size: 26px; text-decoration: none; animation: nudge 2.4s ease-in-out infinite; }
+  @keyframes nudge { 50% { transform: translateY(8px); } }
+
+  .feature { padding: 72px 20px; }
+  .feature::after { background: linear-gradient(to bottom, var(--ink) 0%, rgba(13,9,9,.5) 24%, rgba(13,9,9,.5) 76%, var(--ink) 100%); }
+  .feature .in { max-width: 980px; margin: 0 auto; display: grid; gap: 36px; align-items: center; justify-items: center; }
+  .feature .text { text-align: center; max-width: 30em; }
+  .eyebrow { font: 700 13px/1 Arial, sans-serif; letter-spacing: .22em; color: var(--blood-bright); margin-bottom: 14px; }
+  h2 { font-size: clamp(30px, 7.5vw, 46px); line-height: 1.15; margin-bottom: 16px; }
+  .feature p { font-size: clamp(17px, 4.4vw, 20px); color: var(--bone); }
+  .feature .text { text-shadow: 0 1px 14px #000, 0 0 3px #000; }
+  .phone { width: min(64vw, 290px); border-radius: 30px; border: 3px solid #46342F; box-shadow: 0 24px 70px #000; overflow: hidden; background: #150E0E; }
+  @media (min-width: 820px) {
+    .feature { padding: 110px 40px; }
+    .feature .in { grid-template-columns: 1fr auto; gap: 72px; }
+    .feature .text { text-align: left; }
+    .feature.flip .in { grid-template-columns: auto 1fr; }
+    .feature.flip .text { order: 2; }
+  }
+
+  .closing { padding: 120px 20px 96px; text-align: center; }
+  .closing .bg { object-position: 50% 40%; }
+  .closing::after { background: linear-gradient(to bottom, var(--ink) 0%, rgba(13,9,9,.35) 30%, rgba(13,9,9,.8) 75%, var(--ink) 100%); }
+  blockquote { margin: 0 auto 10px; max-width: 16em; font-size: clamp(28px, 7vw, 44px); font-weight: 700; line-height: 1.2; text-shadow: 0 2px 20px #000; }
+  cite { display: block; font-style: italic; color: var(--bone-dim); margin-bottom: 34px; text-shadow: 0 1px 10px #000; }
+  .free { color: var(--gold); font-weight: 700; font-size: 20px; margin-bottom: 18px; }
+
+  footer { text-align: center; font-size: 14px; color: var(--bone-dim); padding: 22px 16px 34px; border-top: 1px solid var(--line); }
+  footer a { color: var(--blood-bright); }
+
+  /* Só com JavaScript: os blocos surgem ao entrar na tela. Sem ele, tudo fica à vista. */
+  .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s ease; }
+  .js .reveal.in-view { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero .bg, .more { animation: none; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
 </style>
 </head>
 <body>
-<div class="hero" aria-hidden="true">
-  <svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A0B0E"/><stop offset="1" stop-color="#0D0909"/></linearGradient>
-      <radialGradient id="halo"><stop offset="0" stop-color="#D8CBB3" stop-opacity=".3"/><stop offset="1" stop-color="#D8CBB3" stop-opacity="0"/></radialGradient>
-    </defs>
-    <rect width="160" height="90" fill="url(#sky)"/>
-    <circle cx="112" cy="28" r="40" fill="url(#halo)"/>
-    <circle cx="112" cy="28" r="13" fill="#D8CBB3"/>
-    <path d="M0,90 L0,74 L14,70 L26,72 L40,62 L52,60 L60,50 L100,49 L108,57 L122,60 L136,68 L150,70 L160,74 L160,90 Z" fill="#120A0B"/>
-    <path d="M60,51 L60,34 L63,34 L63,31 L66,31 L66,34 L70,34 L70,18 L72,18 L72,15 L74,15 L74,18 L77,18 L77,15 L79,15 L79,18 L82,18 L82,34 L88,34 L88,9 L90,9 L91,2 L92,9 L95,9 L95,34 L98,34 L98,29 L100,32 L101,27 L103,31 L104,51 Z" fill="#070404"/>
-    <rect y="80" width="160" height="10" fill="#0D0909"/>
-  </svg>
-</div>
-<main>
+
+<header class="scene hero">
+  <picture style="display: contents">
+    <source media="(min-aspect-ratio: 1/1)" srcset="img/hero-wide.webp" width="1920" height="1080">
+    <img class="bg" src="img/hero.webp" alt="" width="1200" height="1600">
+  </picture>
+  <button class="switch" id="switch" type="button" aria-label="Ver em português">PT</button>
   <h1 id="title">DRACULA</h1>
-  <div class="lang on" data-lang="en">
-    <p class="sub">The Journals of Jonathan Harker</p>
-    <p>Read Bram Stoker's novel as it happens. Journals, letters, telegrams and newspaper clippings arrive one by one, with choices to make, clues to collect in Mina's notebook, sound and hand-drawn art. 27 chapters, in English and Portuguese.</p>
-    <p><a class="cta" href="https://play.google.com/store/apps/details?id=com.borzanti.dracula&amp;referrer=utm_source%3Dsite%26utm_medium%3Dweb%26utm_campaign%3Dsempre">Get it on Google Play</a></p>
-    <p class="note">Chapter 1 is free. Android.</p>
-  </div>
-  <div class="lang" data-lang="pt">
-    <p class="sub">Os diários de Jonathan Harker</p>
-    <p>Leia o romance de Bram Stoker no ritmo em que ele acontece. Diários, cartas, telegramas e recortes de jornal chegam um a um, com escolhas, pistas no Caderno de Mina, sons e ilustrações. 27 capítulos, em português e em inglês.</p>
-    <p><a class="cta" href="https://play.google.com/store/apps/details?id=com.borzanti.dracula&amp;referrer=utm_source%3Dsite%26utm_medium%3Dweb%26utm_campaign%3Dsempre">Baixar no Google Play</a></p>
-    <p class="note">O capítulo 1 é grátis. Android.</p>
-  </div>
+  <p class="sub" data-pt="O romance de Bram Stoker, contado em mensagens">Bram Stoker's novel, told in messages</p>
+  <a class="cta" href="https://play.google.com/store/apps/details?id=com.borzanti.dracula&amp;referrer=utm_source%3Dsite%26utm_medium%3Dweb%26utm_campaign%3Dsempre" data-pt="Baixar no Google Play">Get it on Google Play</a>
+  <p class="note" data-pt="Capítulo 1 grátis · Android · em português e em inglês">Chapter 1 is free · Android · in English and Portuguese</p>
+  <a class="more" href="#messages">&#8964;</a>
+</header>
+
+<main>
+  <section class="scene feature" id="messages">
+    <img class="bg" src="img/mesa.webp" alt="" loading="lazy" width="1000" height="1333">
+    <div class="in">
+      <div class="text reveal">
+        <p class="eyebrow" data-pt="1893 · EXETER">1893 · EXETER</p>
+        <h2 data-pt="Chega como mensagem">It arrives as messages</h2>
+        <p data-pt="O diário de Jonathan, as cartas de Mina, telegramas e recortes de jornal chegam um a um, no ritmo que você escolher. Stoker escreveu o romance assim; aqui ele cabe no seu celular.">Jonathan's journal, Mina's letters, telegrams and newspaper clippings arrive one by one, at the pace you choose. Stoker wrote the novel this way; here it fits in your phone.</p>
+      </div>
+      <img class="phone reveal" src="img/letter-en.webp" data-pt-src="img/letter-pt.webp" alt="The app showing a telegram and a letter" data-pt-alt="O app mostrando um telegrama e uma carta" loading="lazy" width="540" height="1092">
+    </div>
+  </section>
+
+  <section class="scene feature flip">
+    <img class="bg" src="img/crucifixo.webp" alt="" loading="lazy" width="1000" height="1333">
+    <div class="in">
+      <div class="text reveal">
+        <p class="eyebrow" data-pt="VÉSPERA DE SÃO JORGE">ST. GEORGE'S EVE</p>
+        <h2 data-pt="A escolha é sua">The choice is yours</h2>
+        <p data-pt="A dona da estalagem implora que você não suba ao castelo e estende um crucifixo. Aceitar ou recusar? Em alguns momentos é você quem decide o que Jonathan faz, e descobre cenas que passariam em branco.">The landlady begs you not to go up to the castle and holds out a crucifix. Accept or refuse? At some moments you decide what Jonathan does, and uncover scenes you would otherwise miss.</p>
+      </div>
+      <img class="phone reveal" src="img/choice-en.webp" data-pt-src="img/choice-pt.webp" alt="The app showing the choice to accept or refuse the crucifix" data-pt-alt="O app mostrando a escolha entre aceitar e recusar o crucifixo" loading="lazy" width="540" height="1092">
+    </div>
+  </section>
+
+  <section class="scene feature">
+    <img class="bg" src="img/demeter.webp" alt="" loading="lazy" width="1400" height="933">
+    <div class="in">
+      <div class="text reveal">
+        <p class="eyebrow" data-pt="DOS CÁRPATOS A WHITBY">FROM THE CARPATHIANS TO WHITBY</p>
+        <h2 data-pt="27 capítulos, com som e arte">27 chapters, with sound and art</h2>
+        <p data-pt="Uma trilha de piano assombrada, cenas ilustradas e pistas para reunir no Caderno de Mina. O primeiro capítulo é grátis; uma compra única libera o livro inteiro. Sem anúncios.">A haunting piano score, illustrated scenes and clues to collect in Mina's notebook. The first chapter is free; one purchase unlocks the whole book. No ads.</p>
+      </div>
+      <img class="phone reveal" src="img/chapters-en.webp" data-pt-src="img/chapters-pt.webp" alt="The app's chapter list" data-pt-alt="A lista de capítulos do app" loading="lazy" width="540" height="1092">
+    </div>
+  </section>
+
+  <section class="scene closing">
+    <img class="bg" src="img/neve.webp" alt="" loading="lazy" width="1400" height="933">
+    <div class="reveal">
+      <blockquote data-pt="“Escute. Os filhos da noite. Que música eles fazem!”">“Listen to them. The children of the night. What music they make!”</blockquote>
+      <cite data-pt="Conde Drácula">Count Dracula</cite>
+      <p class="free" data-pt="Capítulo 1 grátis">Chapter 1 is free</p>
+      <a class="cta" href="https://play.google.com/store/apps/details?id=com.borzanti.dracula&amp;referrer=utm_source%3Dsite%26utm_medium%3Dweb%26utm_campaign%3Dsempre" data-pt="Baixar no Google Play">Get it on Google Play</a>
+    </div>
+  </section>
 </main>
+
 <footer><a href="privacy/">Privacy · Privacidade</a> · <a href="mailto:admin@borzanti.com">admin@borzanti.com</a></footer>
+
 <script>
-  // Português para navegadores em português; inglês para o resto.
-  if ((navigator.language || "").toLowerCase().startsWith("pt")) {
-    document.querySelectorAll(".lang").forEach((el) => el.classList.toggle("on", el.dataset.lang === "pt"));
-    document.getElementById("title").textContent = "DRÁCULA";
-    document.documentElement.lang = "pt-BR";
+  document.documentElement.classList.add("js");
+
+  // Português para navegadores em português; inglês para o resto. O botão troca à mão.
+  var english = {};
+  function show(lang) {
+    var pt = lang === "pt";
+    document.querySelectorAll("[data-pt]").forEach(function (el, i) {
+      if (!(i in english)) english[i] = el.textContent;
+      el.textContent = pt ? el.dataset.pt : english[i];
+    });
+    document.querySelectorAll("[data-pt-src]").forEach(function (img) {
+      if (!img.dataset.enSrc) { img.dataset.enSrc = img.getAttribute("src"); img.dataset.enAlt = img.alt; }
+      img.src = pt ? img.dataset.ptSrc : img.dataset.enSrc;
+      img.alt = pt ? img.dataset.ptAlt : img.dataset.enAlt;
+    });
+    document.getElementById("title").textContent = pt ? "DRÁCULA" : "DRACULA";
+    document.documentElement.lang = pt ? "pt-BR" : "en";
+    var button = document.getElementById("switch");
+    button.textContent = pt ? "EN" : "PT";
+    button.setAttribute("aria-label", pt ? "See it in English" : "Ver em português");
+    button.onclick = function () { show(pt ? "en" : "pt"); };
+  }
+  show((navigator.language || "").toLowerCase().indexOf("pt") === 0 ? "pt" : "en");
+
+  if ("IntersectionObserver" in window) {
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) { if (entry.isIntersecting) { entry.target.classList.add("in-view"); seen.unobserve(entry.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach(function (el) { seen.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in-view"); });
   }
 </script>
 </body>
